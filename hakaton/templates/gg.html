@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <title>Приветственная страница</title>
+</head>
+<body>
+    <header>
+        <div class="left-part">
+            <img class= "logo" src="{% static 'images/logo.jpg' %}" alt="logo">
+            <p class="phone-number">+7-8352-20-12-09, telegram</p>
+        </div>
+        <h1>Электронная сервисная книжка "Мой Силант"</h1>
+        <button class="authorize">Авторизация</button>
+    </header>
+
+    <div class="content">
+        <p class="content-text">Проверьте комплектацию и технические характеристики техники силант</p>
+
+        <form action="{% url 'search_view' %}" method="get" class="search-form">
+            <input type="text" name="search_term" placeholder="Введите данные для поиска" value="{{ search_term }}">
+            <button type="submit">Поиск</button>
+        </form>
+
+        <form action="{% url 'search_view' %}" method="get" class="search-form">
+            {{ form.as_p }}
+            <button type="submit">Применить фильтр</button>
+        </form>
+
+        <h2>Результат поиска</h2>
+
+        <h3>Информация о комплектации и технических характеристиках вашей техники</h3>
+
+        <p>{{ result_message }}</p>
+
+        <div class="results">
+
+            <table>
+                {% if data %}
+                    <thead>
+                        <tr>
+                            <th>Номер</th>
+                            <th>Модель техники</th>
+                            <th>Заводской номер</th>
+                            <th>Модель двигателя</th>
+                            <th>Заводской номер двигателя</th>
+                            <th>Модель трансмиссии</th>
+                            <th>Заводской номер трансмиссии</th>
+                            <th>Модель ведущего моста</th>
+                            <th>Заводской номер ведущего моста</th>
+                            <th>Модель управляемого моста</th>
+                            <th>Заводской номер управляемого моста</th>
+                            <th>Дата отгрузки с завода</th>
+                            <th>Покупатель</th>
+                            <th>Грузополучатель</th>
+                            <th>Адрес поставки</th>
+                            <th>Комплектация</th>
+                            <th>Сервисная компания</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in data %}
+                            <tr>
+                                <td>{{ item.Number }}</td>
+                                <td>{{ item.Model_of_equipment_id }}</td>
+                                <td>{{ item.Zav_number_machine }}</td>
+                                <td>{{ item.Engine_model_id }}</td>
+                                <td>{{ item.Zav_number_engine }}</td>
+                                <td>{{ item.Transmission_model_id }}</td>
+                                <td>{{ item.Zav_number_transmission }}</td>
+                                <td>{{ item.Drive_axle_model_id }}</td>
+                                <td>{{ item.Zav_number_drive_axle }}</td>
+                                <td>{{ item.Steering_axle_model_id }}</td>
+                                <td>{{ item.Zav_number_steering_axle }}</td>
+                                <td>{{ item.Date_shipment|date:"Y-m-d" }}</td>
+                                <td>{{ item.Buyer }}</td>
+                                <td>{{ item.Consignee }}</td>
+                                <td>{{ item.Delivery_address }}</td>
+                                <td>{{ item.Configuration }}</td>
+                                <td>{{ item.Service_company_id }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                {% else %}
+                    <p>Ничего не найдено.</p>
+                {% endif %}
+            </table>
+        </div>
+    </div>
+    <footer>
+        <p class="phone-number">+7-8352-20-12-09, telegram</p>
+        <p>Мой силант 2022</p>
+    </footer>
+</body>
+</html>
